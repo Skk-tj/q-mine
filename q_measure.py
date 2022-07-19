@@ -5,13 +5,13 @@ from enum import Enum
 
 
 class MeasureResult(Enum):
-    Mine = 0
-    NoMine = 1
+    NoMine = 0
+    Mine = 1
 
 
 class MineState(Enum):
-    Blew = 0
-    NotBlown = 1
+    NotBlown = 0
+    Blew = 1
 
 
 def get_q_circuit():
@@ -63,4 +63,6 @@ def get_measurement_result_for_one_shot(qc, backend='qasm_simulator'):
     results = qiskit.execute(qc, backend=backend, shots=shots).result()
     answer = results.get_counts()
 
-    return answer
+    measurement_result = list(answer.keys())[0]
+
+    return MeasureResult(int(measurement_result[0])), MineState(int(measurement_result[1]))

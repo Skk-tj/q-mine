@@ -1,8 +1,20 @@
 import matplotlib.pyplot as plt
 import qiskit
 import qiskit.visualization as qv
+from enum import Enum
 
-if __name__ == "__main__":
+
+class MeasureResult(Enum):
+    Mine = 0
+    NoMine = 1
+
+
+class MineState(Enum):
+    Blew = 0
+    NotBlown = 1
+
+
+def get_q_circuit():
     # Initialize qubits
     # 1st qubit is the photon bit
     # 2nd qubit is the bomb bit
@@ -27,6 +39,10 @@ if __name__ == "__main__":
 
     qc.measure_all()
 
+    return qc
+
+
+def visualize_q(qc):
     qc.draw(output='mpl')
     plt.show()
 
@@ -38,3 +54,13 @@ if __name__ == "__main__":
 
     qv.plot_histogram(answer, title="Quantum bomb")
     plt.show()
+
+
+def get_measurement_result_for_one_shot(qc, backend='qasm_simulator'):
+    backend = qiskit.BasicAer.get_backend('qasm_simulator')
+    shots = 1
+
+    results = qiskit.execute(qc, backend=backend, shots=shots).result()
+    answer = results.get_counts()
+
+    return answer

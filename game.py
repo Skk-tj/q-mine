@@ -25,7 +25,8 @@ class Game():
         initial = (0,0)
         for row in range(self.board.getDimensions()[0]):
             for col in range(self.board.getDimensions()[1]):
-                image = self.images["NONE"]
+                tile = self.board.getTile((row, col))
+                image = self.images[tile.getType()]
                 self.display.blit(image,initial)
                 initial = initial[0] + self.tileSize[0], initial[1]
             initial = 0, initial[1] + self.tileSize[1]

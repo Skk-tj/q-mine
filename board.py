@@ -22,9 +22,9 @@ class MinesweeperBoard:
         # Populate the mines
         all_coordinates = list(itertools.product(range(w), range(h)))
 
-        mine_coordinates = random.sample(all_coordinates, mines)
+        self.mine_coordinates = random.sample(all_coordinates, mines)
 
-        for c in mine_coordinates:
+        for c in self.mine_coordinates:
             self.board[c[1]][c[0]] = 1
 
     def __repr__(self):
@@ -35,3 +35,64 @@ Current number of mines: {self.current_number_of_mines}
         
 {str_repr_of_board}
         """
+
+    def get_number_of_mines_around_coordinate(self, coordinate: tuple[int, int]) -> int:
+        """
+        Get the number of mines around a coordinate.
+
+        :param coordinate: In (x, y) format, x is the column and y is the row, both from top to bottom.
+        :return: Number of mines.
+        """
+        rows, cols = len(self.board), len(self.board[0])
+
+        if coordinate[1] >= rows:
+            return 0
+
+        if coordinate[0] >= cols:
+            return 0
+
+        result = 0
+
+        # top segment
+        if coordinate[1] - 1 >= 0:
+            # top center
+            if self.board[coordinate[1] - 1][coordinate[0]] == 1:
+                result += 1
+
+            # top left
+            if coordinate[0] - 1 >= 0:
+                if self.board[coordinate[1] - 1][coordinate[0] - 1] == 1:
+                    result += 1
+
+            # top right
+            if coordinate[0] + 1 < cols:
+                if self.board[coordinate[1] - 1][coordinate[0] + 1] == 1:
+                    result += 1
+
+        # middle left
+        if coordinate[0] - 1 >= 0:
+            if self.board[coordinate[1]][coordinate[0] - 1] == 1:
+                result += 1
+
+        # middle right
+        if coordinate[0] + 1 < cols:
+            if self.board[coordinate[1]][coordinate[0] + 1] == 1:
+                result += 1
+
+        # bottom segment
+        if coordinate[1] + 1 < rows:
+            # bottom center
+            if self.board[coordinate[1] + 1][coordinate[0]] == 1:
+                result += 1
+
+            # bottom left
+            if coordinate[0] - 1 >= 0:
+                if self.board[coordinate[1] + 1][coordinate[0] - 1] == 1:
+                    result += 1
+
+            # bottom right
+            if coordinate[0] + 1 <= cols:
+                if self.board[coordinate[1] + 1][coordinate[0] + 1] == 1:
+                    result += 1
+
+        return result

@@ -57,9 +57,10 @@ class Game():
 
     def handleClick(self, position):
         index = position[1] // self.tileSize[1], position[0] // self.tileSize[0]
-        if self.board.handleClick(index) == "GAMEOVER":
+        result = self.board.handleClick(index)
+        if result == "GAMEOVER":
             pygame.display.flip()
             self.winOrLose = "LOSS"
             self.inGame = False
-        if self.board.handleClick(index) == "GAMECOMPLETE":
+        if result == "GAMECOMPLETE":
             self.inGame = False

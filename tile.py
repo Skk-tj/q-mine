@@ -9,6 +9,9 @@ class Tile():
     def getType(self):
         return self.type
 
+    def setType(self, type):
+        self.type = type
+
     def getDisplay(self):
         return self.display 
 
@@ -27,4 +30,7 @@ class Tile():
 
     def setDisplay(self, type):
         self.display = type
+
+    def getMines(self):
+        return self.mines
         

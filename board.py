@@ -25,7 +25,7 @@ class MinesweeperBoard:
         self.mine_coordinates = random.sample(all_coordinates, mines)
 
         for c in self.mine_coordinates:
-            self.board[c[1]][c[0]] = 1
+            self.board[c[1]][c[0]] = "*"
 
     def __repr__(self):
         str_repr_of_board = "\n".join([str(row) for row in self.board])
@@ -36,7 +36,7 @@ Current number of mines: {self.current_number_of_mines}
 {str_repr_of_board}
         """
 
-    def get_number_of_mines_around_coordinate(self, coordinate: tuple[int, int]) -> int:
+    def get_mines_around_coordinate(self, coordinate: tuple[int, int]) -> tuple[int, int]:
         """
         Get the number of mines around a coordinate.
 
@@ -51,48 +51,47 @@ Current number of mines: {self.current_number_of_mines}
         if coordinate[0] >= cols:
             return 0
 
-        result = 0
-
+        result = []
         # top segment
         if coordinate[1] - 1 >= 0:
             # top center
-            if self.board[coordinate[1] - 1][coordinate[0]] == 1:
-                result += 1
+            if self.board[coordinate[1] - 1][coordinate[0]] == "*":
+                result.append((coordinate[1] - 1, coordinate[0]))
 
             # top left
             if coordinate[0] - 1 >= 0:
-                if self.board[coordinate[1] - 1][coordinate[0] - 1] == 1:
-                    result += 1
+                if self.board[coordinate[1] - 1][coordinate[0] - 1] == "*":
+                    result.append((coordinate[1] - 1, coordinate[0] - 1))
 
             # top right
             if coordinate[0] + 1 < cols:
-                if self.board[coordinate[1] - 1][coordinate[0] + 1] == 1:
-                    result += 1
+                if self.board[coordinate[1] - 1][coordinate[0] + 1] == "*":
+                    result.append((coordinate[1] - 1, coordinate[0] + 1))
 
         # middle left
         if coordinate[0] - 1 >= 0:
-            if self.board[coordinate[1]][coordinate[0] - 1] == 1:
-                result += 1
+            if self.board[coordinate[1]][coordinate[0] - 1] == "*":
+                result.append((coordinate[1], coordinate[0] - 1))
 
         # middle right
         if coordinate[0] + 1 < cols:
-            if self.board[coordinate[1]][coordinate[0] + 1] == 1:
-                result += 1
+            if self.board[coordinate[1]][coordinate[0] + 1] == "*":
+                result.append((coordinate[1], coordinate[0] + 1))
 
         # bottom segment
         if coordinate[1] + 1 < rows:
             # bottom center
-            if self.board[coordinate[1] + 1][coordinate[0]] == 1:
-                result += 1
+            if self.board[coordinate[1] + 1][coordinate[0]] == "*":
+                result.append((coordinate[1] + 1, coordinate[0]))
 
             # bottom left
             if coordinate[0] - 1 >= 0:
-                if self.board[coordinate[1] + 1][coordinate[0] - 1] == 1:
-                    result += 1
+                if self.board[coordinate[1] + 1][coordinate[0] - 1] == "*":
+                    result.append((coordinate[1] + 1, coordinate[0] - 1))
 
             # bottom right
-            if coordinate[0] + 1 <= cols:
-                if self.board[coordinate[1] + 1][coordinate[0] + 1] == 1:
-                    result += 1
+            if coordinate[0] + 1 < cols:
+                if self.board[coordinate[1] + 1][coordinate[0] + 1] == "*":
+                    result.append((coordinate[1] + 1, coordinate[0] + 1))
 
         return result

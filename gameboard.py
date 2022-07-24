@@ -39,16 +39,17 @@ class GameBoard():
             self.count = self.count + 1
             if tile.type.isnumeric() and tile.type != "0":
                 res = q_measure.get_measurement_result_for_one_shot(self.qc)
-                print(res)
                 if res[0].value == 0:
                     tile.setType("0")
-                if res[1].value:
-                    for mine in tile.getMines():
+                tile.toggleDisplay()
+                for mine in tile.getMines():
+                    mine_res = q_measure.get_measurement_result_for_one_shot(self.qc)
+                    if mine_res[1].value == 1:
                         minetile = self.visualBoard[mine[0]][mine[1]]
-                        minetile.setDisplay("EXPLODE")
+                        minetile.setType("EXPLODE")
                         minetile.toggleDisplay()
-                    tile.toggleDisplay()
-                    return "GAMEOVER"
+                        return "GAMEOVER"
+                return
             tile.toggleDisplay()
 
         if tile.type == "MINE":
